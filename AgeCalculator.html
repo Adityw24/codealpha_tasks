@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Age Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #212529;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    body::-webkit-scrollbar-button{
+        display: none;
+    }
+
+    .calculator {
+      background: #343a40;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      width: 320px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #dee2e6;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      width: 30%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #6c757d;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      background-color: #2b2c28;
+    }
+
+    #result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #dee2e6;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <h2>Age Calculator</h2>
+    <div class="input-group">
+      <input type="number" id="day" placeholder="DD" min="1" max="31">
+      <input type="number" id="month" placeholder="MM" min="1" max="12">
+      <input type="number" id="year" placeholder="YYYY" min="1900" max="2100">
+    </div>
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateAge() {
+    const day = parseInt(document.getElementById('day').value);
+      const month = parseInt(document.getElementById('month').value) - 1; 
+    const year = parseInt(document.getElementById('year').value);
+
+      if (isNaN(day) || isNaN(month) || isNaN(year)) {
+        alert("Please fill in all fields correctly.");
+        return;
+      }
+
+      const birthDate = new Date(year, month, day);
+      const today = new Date();
+
+      if (birthDate > today) {
+        alert("Date of birth cannot be in the future.");
+        return;
+      }
+
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+
+      if (ageDays < 0) {
+        ageMonths--;
+        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        ageDays += previousMonth.getDate();
+      }
+
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+      document.getElementById("result").innerText =
+        `You are ${ageYears} years, ${ageMonths} months, and ${ageDays} days old.`;
+    }
+  </script>
+
+</body>
+</html>
